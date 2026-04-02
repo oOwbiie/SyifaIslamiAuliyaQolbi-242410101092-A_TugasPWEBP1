@@ -22,7 +22,688 @@
     <p>
         Dengan melakukan diving, kita dapat menikmati keindahan dunia bawah laut
         seperti terumbu karang yang indah, berbagai jenis ikan tropis, serta
-        keanekaragaman biota laut lainnya. Diving menjadi salah satu wisata
+        keanekaragaman biota laut lainnya. Diving menj<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Website Reservasi Diving</title>
+    <link rel="icon" type="image/x-icon" href="diving.jpg" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- ══ 1. NAVBAR ══ -->
+    <nav class="navbar" id="navbar">
+      <a href="#" class="navbar-logo">
+        <div class="logo-icon">🤿</div>
+        DIVE<span>LOMBOK</span>
+      </a>
+
+      <button class="navbar-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="navbar-menu" id="navMenu">
+        <li><a href="#beranda" class="active link-wave">Beranda</a></li>
+        <li><a href="#paket" class="link-wave">Paket</a></li>
+        <li><a href="#jadwal" class="link-wave">Jadwal</a></li>
+        <li><a href="#filter" class="link-wave">Filter</a></li>
+        <li><a href="reservasi.html" class="btn-nav">Reservasi</a></li>
+      </ul>
+    </nav>
+
+    <!-- ══ 2. HERO SECTION ══ -->
+    <section class="hero" id="beranda">
+      <div class="hero-content">
+        <span class="hero-badge">🌊 Gili Trawangan · Lombok</span>
+        <h1>SELAMAT DATANG<br /><span class="accent">PECINTA DIVING</span></h1>
+        <p>
+          Rasakan sensasi menyelam bebas di perairan Lombok yang jernih. Temukan
+          keindahan dunia bawah laut tanpa batas, hanya dengan satu napas.
+        </p>
+
+        <div class="hero-img">
+          <img
+            src="diving.jpg"
+            alt="Orang sedang free diving di perairan Lombok"
+          />
+        </div>
+
+        <div class="hero-cta">
+          <a href="reservasi.html" class="btn btn-primary pulse"
+            >🤿 Mulai Reservasi</a
+          >
+          <a href="#paket" class="btn btn-outline">Lihat Paket ↓</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 3. GRID CARD — Paket Diving ══ -->
+    <div class="section" id="paket">
+      <div class="section-header reveal">
+        <span class="section-tag">🐠 Pilihan Paket</span>
+        <h2>PAKET DIVING TERSEDIA</h2>
+        <p>
+          Dari pemula hingga profesional, kami punya paket yang cocok untukmu
+        </p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card reveal relative">
+          <div class="card-img">🐠</div>
+          <span class="card-badge">Populer</span>
+          <div class="card-body">
+            <div class="card-title">Paket Pemula</div>
+            <div class="card-text">
+              Cocok untuk yang baru pertama kali mencoba free diving. Termasuk
+              instruktur bersertifikat.
+            </div>
+            <div class="card-price">Rp 350.000 <span>/ orang</span></div>
+            <a href="reservasi.html" class="btn btn-primary w-full"
+              >Pesan Sekarang</a
+            >
+          </div>
+        </div>
+
+        <div class="card reveal relative">
+          <div class="card-img">🐙</div>
+          <div class="card-body">
+            <div class="card-title">Paket Menengah</div>
+            <div class="card-text">
+              Untuk yang sudah memiliki dasar. Eksplorasi lebih dalam dengan
+              pendampingan penuh.
+            </div>
+            <div class="card-price">Rp 550.000 <span>/ orang</span></div>
+            <a href="reservasi.html" class="btn btn-primary w-full"
+              >Pesan Sekarang</a
+            >
+          </div>
+        </div>
+
+        <div class="card reveal relative">
+          <div class="card-img">🦈</div>
+          <span class="card-badge" style="background: var(--blue-mid)"
+            >Pro</span
+          >
+          <div class="card-body">
+            <div class="card-title">Paket Profesional</div>
+            <div class="card-text">
+              Menyelam ke spot terbaik Lombok tanpa batasan. Untuk penyelam
+              berpengalaman.
+            </div>
+            <div class="card-price">Rp 850.000 <span>/ orang</span></div>
+            <a href="reservasi.html" class="btn btn-primary w-full"
+              >Pesan Sekarang</a
+            >
+          </div>
+        </div>
+
+        <div class="card reveal relative card-float">
+          <div class="card-img">🐢</div>
+          <span class="card-badge" style="background: #e65100">Promo</span>
+          <div class="card-body">
+            <div class="card-title">Paket Grup</div>
+            <div class="card-text">
+              Harga spesial untuk grup minimal 5 orang. Cocok untuk komunitas
+              atau keluarga.
+            </div>
+            <div class="card-price">Rp 250.000 <span>/ orang</span></div>
+            <a href="reservasi.html" class="btn btn-primary w-full"
+              >Pesan Sekarang</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 4. FORM PENCARIAN ══ -->
+    <section class="search-section" id="cari">
+      <div class="search-box">
+        <div class="section-header reveal">
+          <span class="section-tag">🔍 Cari Jadwal</span>
+          <h2>CARI SESI DIVING</h2>
+          <p>Temukan jadwal yang paling sesuai dengan rencanamu</p>
+        </div>
+
+        <div class="form-grid reveal">
+          <div class="form-group">
+            <label for="nama">Nama Lengkap</label>
+            <input type="text" id="nama" placeholder="Masukkan nama kamu..." />
+          </div>
+
+          <div class="form-group">
+            <label for="tanggal">Tanggal Diving</label>
+            <input type="date" id="tanggal" />
+          </div>
+
+          <div class="form-group">
+            <label for="paket-cari">Paket</label>
+            <select id="paket-cari">
+              <option value="">-- Pilih Paket --</option>
+              <option>Paket Pemula</option>
+              <option>Paket Menengah</option>
+              <option>Paket Profesional</option>
+              <option>Paket Grup</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="peserta">Jumlah Peserta</label>
+            <input
+              type="number"
+              id="peserta"
+              placeholder="Contoh: 2"
+              min="1"
+              max="20"
+            />
+          </div>
+
+          <div class="form-group full">
+            <label for="catatan">Catatan Khusus</label>
+            <textarea
+              id="catatan"
+              rows="3"
+              placeholder="Ada permintaan khusus? Tuliskan di sini..."
+            ></textarea>
+          </div>
+
+          <div class="form-submit">
+            <button type="button" class="btn btn-outline" onclick="resetForm()">
+              Reset
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="cariJadwal()"
+            >
+              🔍 Cari Jadwal
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 5. TABEL JADWAL ══ -->
+    <section class="table-section" id="jadwal">
+      <div
+        class="section-header reveal"
+        style="max-width: 1200px; margin: 0 auto 2rem"
+      >
+        <span class="section-tag">📋 Jadwal Tersedia</span>
+        <h2>DAFTAR SESI DIVING</h2>
+        <p>Slot tersedia untuk bulan ini — segera amankan tempatmu!</p>
+      </div>
+
+      <div class="table-wrapper reveal">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tanggal</th>
+              <th>Sesi</th>
+              <th>Paket</th>
+              <th>Lokasi</th>
+              <th>Instruktur</th>
+              <th>Slot Tersisa</th>
+              <th>Harga</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td>5 Apr 2025</td>
+              <td>07.00 – 10.00</td>
+              <td>Pemula</td>
+              <td>Gili Trawangan</td>
+              <td>Budi Santoso</td>
+              <td>6 orang</td>
+              <td>Rp 350.000</td>
+              <td><span class="table-badge badge-available">Tersedia</span></td>
+            </tr>
+            <tr>
+              <td>02</td>
+              <td>5 Apr 2025</td>
+              <td>13.00 – 16.00</td>
+              <td>Menengah</td>
+              <td>Gili Meno</td>
+              <td>Sari Dewi</td>
+              <td>2 orang</td>
+              <td>Rp 550.000</td>
+              <td><span class="table-badge badge-limited">Terbatas</span></td>
+            </tr>
+            <tr>
+              <td>03</td>
+              <td>6 Apr 2025</td>
+              <td>07.00 – 12.00</td>
+              <td>Profesional</td>
+              <td>Gili Air</td>
+              <td>Reza Pratama</td>
+              <td>0 orang</td>
+              <td>Rp 850.000</td>
+              <td><span class="table-badge badge-full">Penuh</span></td>
+            </tr>
+            <tr>
+              <td>04</td>
+              <td>7 Apr 2025</td>
+              <td>08.00 – 11.00</td>
+              <td>Grup</td>
+              <td>Gili Trawangan</td>
+              <td>Anisa Rahma</td>
+              <td>12 orang</td>
+              <td>Rp 250.000</td>
+              <td><span class="table-badge badge-available">Tersedia</span></td>
+            </tr>
+            <tr>
+              <td>05</td>
+              <td>8 Apr 2025</td>
+              <td>14.00 – 17.00</td>
+              <td>Pemula</td>
+              <td>Senggigi</td>
+              <td>Budi Santoso</td>
+              <td>4 orang</td>
+              <td>Rp 350.000</td>
+              <td><span class="table-badge badge-available">Tersedia</span></td>
+            </tr>
+            <tr>
+              <td>06</td>
+              <td>10 Apr 2025</td>
+              <td>07.00 – 10.00</td>
+              <td>Menengah</td>
+              <td>Gili Trawangan</td>
+              <td>Sari Dewi</td>
+              <td>1 orang</td>
+              <td>Rp 550.000</td>
+              <td><span class="table-badge badge-limited">Terbatas</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ 6. SIDEBAR FILTER + KONTEN ══ -->
+    <div class="content-with-sidebar" id="filter">
+      <!-- Sidebar -->
+      <aside class="sidebar reveal">
+        <div class="sidebar-title">🎛️ Filter Paket</div>
+
+        <div class="filter-group">
+          <span class="filter-group-label">Jenis Paket</span>
+          <label class="checkbox-label">
+            <input type="checkbox" checked />
+            <span class="checkbox-custom"></span>
+            Pemula <span class="filter-count">8</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" checked />
+            <span class="checkbox-custom"></span>
+            Menengah <span class="filter-count">5</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" />
+            <span class="checkbox-custom"></span>
+            Profesional <span class="filter-count">3</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" />
+            <span class="checkbox-custom"></span>
+            Grup <span class="filter-count">6</span>
+          </label>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-group-label">Lokasi</span>
+          <label class="checkbox-label">
+            <input type="checkbox" checked />
+            <span class="checkbox-custom"></span>
+            Gili Trawangan <span class="filter-count">10</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" />
+            <span class="checkbox-custom"></span>
+            Gili Meno <span class="filter-count">4</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" />
+            <span class="checkbox-custom"></span>
+            Gili Air <span class="filter-count">6</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" />
+            <span class="checkbox-custom"></span>
+            Senggigi <span class="filter-count">3</span>
+          </label>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-group-label">Sesi Waktu</span>
+          <label class="checkbox-label">
+            <input type="checkbox" checked />
+            <span class="checkbox-custom"></span>
+            Pagi (06.00–12.00)
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" />
+            <span class="checkbox-custom"></span>
+            Siang (12.00–17.00)
+          </label>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-group-label">Budget Maksimal</span>
+          <input
+            type="range"
+            class="range-slider"
+            min="0"
+            max="1000000"
+            value="600000"
+            step="50000"
+            id="priceRange"
+            oninput="updatePrice(this.value)"
+          />
+          <div class="range-value">
+            <span>Rp 0</span>
+            <span id="priceLabel">Rp 600.000</span>
+          </div>
+        </div>
+
+        <button class="sidebar-reset">↺ Reset Filter</button>
+      </aside>
+
+      <!-- Konten di sebelah sidebar -->
+      <div>
+        <div
+          class="section-header reveal"
+          style="text-align: left; margin-bottom: 1.5rem"
+        >
+          <span class="section-tag">✅ Hasil Filter</span>
+          <h2>PAKET YANG COCOK</h2>
+          <p>Menampilkan 2 paket sesuai filter kamu</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr; gap: 1rem">
+          <div
+            class="card reveal"
+            style="flex-direction: row; max-width: 100%; align-items: stretch"
+          >
+            <div
+              class="card-img"
+              style="
+                width: 120px;
+                min-height: 120px;
+                flex-shrink: 0;
+                height: auto;
+              "
+            >
+              🐠
+            </div>
+            <div class="card-body">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: start;
+                  flex-wrap: wrap;
+                  gap: 0.5rem;
+                "
+              >
+                <div class="card-title">Paket Pemula — Gili Trawangan</div>
+                <span class="table-badge badge-available">Tersedia</span>
+              </div>
+              <div class="card-text">
+                Sesi pagi · 07.00–10.00 · Instruktur: Budi Santoso · 6 slot
+                tersisa
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  flex-wrap: wrap;
+                  gap: 0.5rem;
+                "
+              >
+                <div class="card-price" style="margin: 0">
+                  Rp 350.000 <span>/ orang</span>
+                </div>
+                <a
+                  href="reservasi.html"
+                  class="btn btn-primary"
+                  style="padding: 0.5rem 1.2rem; font-size: 0.85rem"
+                  >Pesan →</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="card reveal"
+            style="flex-direction: row; max-width: 100%; align-items: stretch"
+          >
+            <div
+              class="card-img"
+              style="
+                width: 120px;
+                min-height: 120px;
+                flex-shrink: 0;
+                height: auto;
+              "
+            >
+              🐙
+            </div>
+            <div class="card-body">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: start;
+                  flex-wrap: wrap;
+                  gap: 0.5rem;
+                "
+              >
+                <div class="card-title">Paket Menengah — Gili Trawangan</div>
+                <span class="table-badge badge-limited">Terbatas</span>
+              </div>
+              <div class="card-text">
+                Sesi siang · 13.00–16.00 · Instruktur: Sari Dewi · 1 slot
+                tersisa
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  flex-wrap: wrap;
+                  gap: 0.5rem;
+                "
+              >
+                <div class="card-price" style="margin: 0">
+                  Rp 550.000 <span>/ orang</span>
+                </div>
+                <a
+                  href="reservasi.html"
+                  class="btn btn-primary"
+                  style="padding: 0.5rem 1.2rem; font-size: 0.85rem"
+                  >Pesan →</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 7. FOOTER — 3 Kolom ══ -->
+    <footer class="footer">
+      <div class="footer-grid">
+        <!-- Kolom 1: Brand -->
+        <div class="footer-brand">
+          <a href="#" class="navbar-logo">
+            <div class="logo-icon">🤿</div>
+            DIVE<span>LOMBOK</span>
+          </a>
+          <p>
+            Platform reservasi diving terpercaya di Lombok. Kami hadir untuk
+            membantu setiap pecinta laut menjelajahi keindahan bawah laut Nusa
+            Tenggara Barat.
+          </p>
+          <div class="footer-socials">
+            <div class="social-btn">📘</div>
+            <div class="social-btn">📷</div>
+            <div class="social-btn">🐦</div>
+            <div class="social-btn">▶️</div>
+          </div>
+        </div>
+
+        <!-- Kolom 2: Link Cepat -->
+        <div>
+          <div class="footer-col-title">Link Cepat</div>
+          <ul class="footer-links">
+            <li><a href="#beranda">Beranda</a></li>
+            <li><a href="#paket">Paket Diving</a></li>
+            <li><a href="#jadwal">Jadwal Sesi</a></li>
+            <li><a href="reservasi.html">Reservasi</a></li>
+            <li><a href="#">Galeri Foto</a></li>
+            <li><a href="#">Tentang Kami</a></li>
+          </ul>
+        </div>
+
+        <!-- Kolom 3: Kontak -->
+        <div>
+          <div class="footer-col-title">Informasi Kontak</div>
+
+          <div class="footer-contact-item">
+            <div class="contact-icon">📍</div>
+            <div>Jl. Pantai Gili Trawangan No. 10, Lombok, NTB</div>
+          </div>
+
+          <div class="footer-contact-item">
+            <div class="contact-icon">📞</div>
+            <div>0812-5678-1234</div>
+          </div>
+
+          <div class="footer-contact-item">
+            <div class="contact-icon">📧</div>
+            <div>info@divelombok.id</div>
+          </div>
+
+          <div class="footer-contact-item">
+            <div class="contact-icon">🕐</div>
+            <div>Senin – Minggu<br />08.00 – 18.00 WITA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2025 DiveLombok. Hak cipta dilindungi.</span>
+        <span>Dibuat dengan ❤️ untuk pecinta laut Indonesia 🇮🇩</span>
+      </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button
+      class="scroll-top"
+      id="scrollTop"
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    >
+      ↑
+    </button>
+
+    <!-- ══ JavaScript ══ -->
+    <script>
+      // Navbar scroll effect
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        navbar.classList.toggle("scrolled", window.scrollY > 60);
+        document
+          .getElementById("scrollTop")
+          .classList.toggle("show", window.scrollY > 400);
+      });
+
+      // Hamburger toggle
+      const toggle = document.getElementById("navToggle");
+      const menu = document.getElementById("navMenu");
+      toggle.addEventListener("click", () => {
+        toggle.classList.toggle("open");
+        menu.classList.toggle("open");
+      });
+
+      // Close menu on link click
+      menu.querySelectorAll("a").forEach((a) => {
+        a.addEventListener("click", () => {
+          toggle.classList.remove("open");
+          menu.classList.remove("open");
+        });
+      });
+
+      // Scroll Reveal (Animasi 1)
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e, i) => {
+            if (e.isIntersecting) {
+              setTimeout(() => e.target.classList.add("visible"), i * 80);
+              observer.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => observer.observe(el));
+
+      // Price range
+      function updatePrice(val) {
+        const formatted = "Rp " + parseInt(val).toLocaleString("id-ID");
+        document.getElementById("priceLabel").textContent = formatted;
+      }
+
+      // Form actions
+      function resetForm() {
+        ["nama", "tanggal", "paket-cari", "peserta", "catatan"].forEach(
+          (id) => {
+            const el = document.getElementById(id);
+            if (el) el.value = "";
+          },
+        );
+      }
+
+      function cariJadwal() {
+        const nama = document.getElementById("nama").value;
+        if (!nama) {
+          alert("Mohon isi nama terlebih dahulu!");
+          return;
+        }
+        alert(
+          "🔍 Mencari jadwal untuk: " +
+            nama +
+            "\n\nScroll ke bawah untuk melihat hasil.",
+        );
+        document
+          .getElementById("jadwal")
+          .scrollIntoView({ behavior: "smooth" });
+      }
+
+      // Active nav link on scroll
+      const sections = document.querySelectorAll("section[id], div[id]");
+      window.addEventListener("scroll", () => {
+        let current = "";
+        sections.forEach((s) => {
+          if (window.scrollY >= s.offsetTop - 80) current = s.id;
+        });
+        menu.querySelectorAll("a").forEach((a) => {
+          a.classList.toggle(
+            "active",
+            a.getAttribute("href") === "#" + current,
+          );
+        });
+      });
+    </script>
+  </body>
+</html>
+adi salah satu wisata
         bahari yang sangat diminati oleh pecinta alam dan petualangan.
     </p>
 
