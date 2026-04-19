@@ -8,26 +8,18 @@
 
 /* ── CSS Variables ── */
 :root {
-  --blue-deep:   #0d0d0d;
-  --blue-dark:   #1a1a2e;
-  --blue-mid:    #c9a227;
-  --blue-bright: #e4b84d;
-  --blue-light:  #f0d080;
-  --blue-pale:   #2a2a3e;
-  --teal:        #c9a227;
-  --teal-light:  #f0d080;
-  --white:       #f0f0f0;
-  --gray-light:  #1e1e2e;
-  --gray-text:   #9a9ab0;
-  --shadow-sm:   0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-md:   0 4px 20px rgba(0, 0, 0, 0.5);
-  --shadow-lg:   0 8px 40px rgba(0, 0, 0, 0.6);
-  --radius-sm:   8px;
-  --radius-md:   14px;
-  --radius-lg:   24px;
-  --transition:  0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
+  --blue-deep:  #0d0d0d;
+  --blue-dark:  #1a1a2e;
+  --blue-mid:   #c9a227;
+  --blue-bright:#e4b84d;
+  --blue-light: #f0d080;
+  --blue-pale:  #2a2a3e;
+  --teal:       #c9a227;
+  --teal-light: #f0d080;
+  --white:      #f0f0f0;
+  --gray-light: #1e1e2e;
+  --gray-bg:    #121220;
+  --gray-text:  #9a9ab0;
 /* ── Reset & Base ── */
 *,
 *::before,
