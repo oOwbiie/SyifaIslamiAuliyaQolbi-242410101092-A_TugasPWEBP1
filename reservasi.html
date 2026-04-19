@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel — DiveLombok</title>
+    <link rel="icon" type="image/x-icon" href="diving.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --blue-deep:  #0a1628;
+        --blue-dark:  #0d2b55;
+        --blue-mid:   #1565c0;
+        --blue-bright:#1e88e5;
+        --blue-light: #42a5f5;
+        --blue-pale:  #e3f2fd;
+        --teal:       #00b4d8;
+        --teal-light: #90e0ef;
+        --white:      #ffffff;
+        --gray-light: #f0f7ff;
+        --gray-bg:    #f5f7fa;
+        --gray-text:  #4a6fa5;
+        --sidebar-w:  240px;
+        --danger:     #ef5350;
+        --danger-pale:#ffebee;
+        --success:    #00acc1;
+        --warning:    #ff8f00;
+        --shadow-sm:  0 2px 8px rgba(21,101,192,0.12);
+        --shadow-md:  0 4px 20px rgba(21,101,192,0.2);
+        --shadow-lg:  0 8px 40px rgba(21,101,192,0.3);
+        --radius-sm:  8px;
+        --radius-md:  14px;
+        --radius-lg:  22px;
+        --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
+      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body { font-family:"Nunito",sans-serif; background:var(--gray-bg); color:var(--blue-deep); min-height:100vh; display:flex; overflow-x:hidden; }
+
+      /* ── SIDEBAR ── */
+      .sidebar {
+        width:var(--sidebar-w); min-height:100vh;
+        background:linear-gradient(180deg,var(--blue-deep) 0%,#061322 100%);
+        display:flex; flex-direction:column;
+        position:fixed; left:0; top:0; bottom:0; z-index:200;
+        transition:transform var(--transition);
+        border-right:1px solid rgba(66,165,245,0.1);
+      }
+      .sidebar-brand { padding:1.5rem 1.25rem 1.25rem; border-bottom:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; gap:0.6rem; }
+      .brand-icon { width:38px; height:38px; flex-shrink:0; background:linear-gradient(135deg,var(--blue-mid),var(--teal)); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+      .brand-name { font-family:"Bebas Neue",sans-serif; font-size:1.2rem; letter-spacing:2px; color:var(--white); }
+      .brand-name span { color:var(--teal); }
+      .brand-role { font-size:0.62rem; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.3); }
+
+      .admin-badge { margin:1rem 1.25rem 0; background:rgba(239,83,80,0.15); border:1px solid rgba(239,83,80,0.3); border-radius:var(--radius-sm); padding:0.5rem 0.75rem; display:flex; align-items:center; gap:0.5rem; }
+      .badge-dot { width:7px; height:7px; border-radius:50%; background:var(--danger); flex-shrink:0; animation:ping 1.8s ease infinite; }
+      @keyframes ping { 0%,100%{box-shadow:0 0 0 0 rgba(239,83,80,0.5);} 60%{box-shadow:0 0 0 6px rgba(239,83,80,0);} }
+      .admin-badge span { font-size:0.7rem; font-weight:800; color:#ff8a80; letter-spacing:1px; text-transform:uppercase; }
+
+      .sidebar-nav { flex:1; padding:1.25rem 0; }
+      .nav-label { font-size:0.58rem; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,0.2); padding:0 1.25rem; margin-bottom:0.4rem; margin-top:0.75rem; }
+      .nav-item { display:flex; align-items:center; gap:0.7rem; padding:0.65rem 1.25rem; margin:0.1rem 0.75rem; border-radius:var(--radius-sm); cursor:pointer; font-size:0.86rem; font-weight:700; color:rgba(255,255,255,0.5); text-decoration:none; transition:background var(--transition),color var(--transition); }
+      .nav-item:hover { background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.85); }
+      .nav-item.active { background:rgba(0,180,216,0.15); color:var(--teal-light); }
+      .nav-ico { font-size:1rem; width:20px; text-align:center; }
+      .nav-cnt { margin-left:auto; background:rgba(0,180,216,0.2); color:var(--teal-light); font-size:0.63rem; font-weight:800; padding:0.15rem 0.5rem; border-radius:50px; }
+      .sidebar-footer { padding:1rem 1.25rem; border-top:1px solid rgba(255,255,255,0.07); }
+      .back-link { display:flex; align-items:center; gap:0.6rem; padding:0.6rem 0.75rem; border-radius:var(--radius-sm); color:rgba(255,255,255,0.4); font-size:0.82rem; font-weight:700; text-decoration:none; transition:background var(--transition),color var(--transition); }
+      .back-link:hover { background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.75); }
+
+      .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:190; }
+      .sidebar-overlay.show { display:block; }
+
+      /* ── MAIN ── */
+      .main { margin-left:var(--sidebar-w); flex:1; min-height:100vh; display:flex; flex-direction:column; }
+
+      /* ── TOPBAR ── */
+      .topbar { background:var(--white); border-bottom:1px solid rgba(21,101,192,0.1); padding:0 1.5rem; height:60px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:var(--shadow-sm); }
+      .topbar-toggle { display:none; background:none; border:none; cursor:pointer; flex-direction:column; gap:5px; padding:4px; }
+      .topbar-toggle span { display:block; width:22px; height:2px; background:var(--blue-dark); border-radius:2px; transition:transform var(--transition),opacity var(--transition); }
+      .topbar-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+      .topbar-toggle.open span:nth-child(2){opacity:0;}
+      .topbar-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+      .topbar-left { display:flex; align-items:center; gap:0.75rem; }
+      .topbar-title { font-family:"Bebas Neue",sans-serif; font-size:1.2rem; letter-spacing:1.5px; color:var(--blue-dark); }
+      .topbar-sub { font-size:0.72rem; color:var(--gray-text); font-weight:600; }
+      .topbar-admin { display:flex; align-items:center; gap:0.5rem; background:var(--gray-bg); border-radius:50px; padding:0.3rem 0.8rem 0.3rem 0.4rem; border:1px solid rgba(21,101,192,0.12); }
+      .adm-avatar { width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,var(--blue-mid),var(--teal)); display:flex; align-items:center; justify-content:center; font-size:0.75rem; color:white; font-weight:800; }
+      .adm-name { font-size:0.78rem; font-weight:800; color:var(--blue-dark); }
+      .adm-role { font-size:0.62rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--danger); }
+
+      /* ── PAGE BODY ── */
+      .page-body { padding:1.5rem; flex:1; }
+      .breadcrumb { display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; color:var(--gray-text); font-weight:700; margin-bottom:1.25rem; }
+      .breadcrumb a { color:var(--gray-text); text-decoration:none; }
+      .breadcrumb a:hover { color:var(--blue-mid); }
+
+      /* ── STATS ── */
+      .stats-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; margin-bottom:1.5rem; }
+      @media(min-width:700px){ .stats-grid{grid-template-columns:repeat(4,1fr);} }
+      .stat-card { background:var(--white); border-radius:var(--radius-md); padding:1rem 1.25rem; box-shadow:var(--shadow-sm); border:1px solid rgba(21,101,192,0.08); display:flex; align-items:center; gap:0.9rem; transition:transform var(--transition),box-shadow var(--transition); }
+      .stat-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); }
+      .stat-icon { width:46px; height:46px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
+      .si-blue{background:rgba(21,101,192,0.1);} .si-teal{background:rgba(0,180,216,0.1);} .si-warn{background:rgba(255,143,0,0.1);} .si-dng{background:rgba(239,83,80,0.1);}
+      .stat-val { font-family:"Bebas Neue",sans-serif; font-size:1.75rem; letter-spacing:1px; color:var(--blue-dark); line-height:1; }
+      .stat-lbl { font-size:0.68rem; font-weight:800; color:var(--gray-text); text-transform:uppercase; letter-spacing:0.5px; margin-top:2px; }
+
+      /* ── CONTENT GRID ── */
+      .content-grid { display:grid; grid-template-columns:1fr; gap:1.25rem; }
+      @media(min-width:1100px){ .content-grid{grid-template-columns:370px 1fr; align-items:start;} }
+
+      /* ── FORM CARD ── */
+      .form-card { background:var(--white); border-radius:var(--radius-md); box-shadow:var(--shadow-sm); border:1px solid rgba(21,101,192,0.08); overflow:hidden; position:sticky; top:76px; }
+      .fcard-head { padding:1.1rem 1.25rem; background:linear-gradient(135deg,var(--blue-dark),var(--blue-mid)); display:flex; align-items:center; gap:0.7rem; transition:background var(--transition); }
+      .fcard-head.edit { background:linear-gradient(135deg,#bf360c,#ff8f00); }
+      .fch-ico { width:38px; height:38px; background:rgba(255,255,255,0.15); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+      .fch-h3 { font-family:"Bebas Neue",sans-serif; font-size:1.1rem; letter-spacing:1.5px; color:var(--white); }
+      .fch-p { font-size:0.71rem; color:rgba(255,255,255,0.6); }
+      .mode-chip { margin-left:auto; background:rgba(255,255,255,0.2); color:white; font-size:0.62rem; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; padding:0.2rem 0.6rem; border-radius:50px; display:none; }
+      .fcard-body { padding:1.25rem; }
+
+      .fgroup { margin-bottom:0.8rem; }
+      .fgroup label { display:block; font-size:0.7rem; font-weight:800; letter-spacing:0.5px; text-transform:uppercase; color:var(--gray-text); margin-bottom:0.32rem; }
+      .fgroup label .req { color:var(--danger); }
+      .fgroup input,.fgroup select { width:100%; padding:0.62rem 0.85rem; border:1.5px solid rgba(21,101,192,0.18); border-radius:var(--radius-sm); font-family:"Nunito",sans-serif; font-size:0.88rem; color:var(--blue-deep); background:var(--white); outline:none; appearance:none; transition:border-color var(--transition),box-shadow var(--transition); }
+      .fgroup input:focus,.fgroup select:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(0,180,216,0.14); }
+      .fgroup input.err,.fgroup select.err { border-color:var(--danger); box-shadow:0 0 0 3px rgba(239,83,80,0.1); }
+      .fgroup input.ok { border-color:#26a69a; }
+      .err-msg { font-size:0.7rem; color:var(--danger); font-weight:700; margin-top:0.28rem; display:none; align-items:center; gap:0.2rem; }
+      .err-msg.show { display:flex; }
+      .frow2 { display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; }
+
+      .form-actions { display:flex; gap:0.6rem; margin-top:1rem; }
+      .btn { display:inline-flex; align-items:center; justify-content:center; gap:0.35rem; padding:0.62rem 1.15rem; border-radius:50px; font-family:"Nunito",sans-serif; font-size:0.86rem; font-weight:800; cursor:pointer; border:2px solid transparent; transition:transform var(--transition),box-shadow var(--transition),background var(--transition); }
+      .btn-primary { background:linear-gradient(135deg,var(--blue-mid),var(--teal)); color:white; flex:1; box-shadow:0 4px 14px rgba(0,180,216,0.26); }
+      .btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,180,216,0.4); }
+      .btn-ghost { background:transparent; color:var(--gray-text); border-color:rgba(21,101,192,0.2); }
+      .btn-ghost:hover { background:var(--blue-pale); border-color:var(--blue-mid); color:var(--blue-mid); }
+      .btn-erow { background:rgba(21,101,192,0.08); color:var(--blue-mid); border:none; padding:0.28rem 0.6rem; font-size:0.72rem; border-radius:6px; }
+      .btn-erow:hover { background:var(--blue-pale); }
+      .btn-drow { background:rgba(239,83,80,0.08); color:var(--danger); border:none; padding:0.28rem 0.6rem; font-size:0.72rem; border-radius:6px; }
+      .btn-drow:hover { background:var(--danger-pale); }
+
+      /* ── TABLE CARD ── */
+      .table-card { background:var(--white); border-radius:var(--radius-md); box-shadow:var(--shadow-sm); border:1px solid rgba(21,101,192,0.08); overflow:hidden; }
+      .tcard-head { padding:1.1rem 1.25rem; border-bottom:1px solid rgba(21,101,192,0.07); }
+      .tcard-head h3 { font-family:"Bebas Neue",sans-serif; font-size:1.1rem; letter-spacing:1.5px; color:var(--blue-dark); margin-bottom:0.6rem; }
+      .toolbar { display:flex; flex-wrap:wrap; gap:0.6rem; }
+      .s-wrap { position:relative; flex:1; min-width:150px; }
+      .s-wrap .s-ico { position:absolute; left:0.75rem; top:50%; transform:translateY(-50%); font-size:0.78rem; color:var(--gray-text); pointer-events:none; }
+      .s-wrap input { width:100%; padding:0.52rem 0.75rem 0.52rem 2.1rem; border:1.5px solid rgba(21,101,192,0.18); border-radius:50px; font-family:"Nunito",sans-serif; font-size:0.83rem; color:var(--blue-deep); outline:none; transition:border-color var(--transition),box-shadow var(--transition); }
+      .s-wrap input:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(0,180,216,0.12); }
+      .f-sel { padding:0.52rem 1.8rem 0.52rem 0.75rem; border:1.5px solid rgba(21,101,192,0.18); border-radius:50px; font-family:"Nunito",sans-serif; font-size:0.83rem; color:var(--blue-deep); background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='6' viewBox='0 0 9 6'%3E%3Cpath d='M1 1l3.5 3.5L8 1' stroke='%234a6fa5' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") no-repeat right 0.65rem center; appearance:none; outline:none; cursor:pointer; transition:border-color var(--transition); }
+      .f-sel:focus { border-color:var(--teal); }
+
+      .tbl-wrap { overflow-x:auto; }
+      table { width:100%; border-collapse:collapse; font-size:0.83rem; min-width:760px; }
+      thead { background:linear-gradient(135deg,var(--blue-deep),var(--blue-dark)); }
+      thead th { padding:0.82rem 0.95rem; color:rgba(255,255,255,0.82); text-align:left; font-size:0.67rem; font-weight:800; letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
+      tbody tr { border-bottom:1px solid rgba(21,101,192,0.06); transition:background var(--transition); }
+      tbody tr:nth-child(even){ background:#f8fbff; }
+      tbody tr:nth-child(odd) { background:var(--white); }
+      tbody tr:hover { background:rgba(0,180,216,0.07); }
+      tbody tr.new-row { animation:flashRow 1.4s ease; }
+      @keyframes flashRow { 0%{background:rgba(0,180,216,0.28);} 100%{background:transparent;} }
+      tbody td { padding:0.72rem 0.95rem; vertical-align:middle; }
+      .td-act { display:flex; gap:0.3rem; white-space:nowrap; }
+
+      .badge { display:inline-block; padding:0.17rem 0.55rem; border-radius:50px; font-size:0.66rem; font-weight:800; letter-spacing:0.5px; text-transform:uppercase; }
+      .bp{background:rgba(0,180,216,0.1);color:#006064;} .bm{background:rgba(255,143,0,0.1);color:#e65100;} .bpr{background:rgba(21,101,192,0.1);color:#0d2b55;} .bg{background:rgba(76,175,80,0.1);color:#1b5e20;}
+      .slot-low{color:var(--warning);font-weight:800;} .slot-full{color:var(--danger);font-weight:800;}
+
+      .empty-state { text-align:center; padding:3rem 1.5rem; color:var(--gray-text); }
+      .empty-state .ei { font-size:2.5rem; margin-bottom:0.7rem; opacity:0.4; }
+      .empty-state h3 { font-family:"Bebas Neue",sans-serif; font-size:1.25rem; letter-spacing:1px; color:var(--blue-dark); margin-bottom:0.3rem; }
+      .empty-state p { font-size:0.83rem; }
+
+      /* ── MODAL ── */
+      .overlay { position:fixed; inset:0; background:rgba(10,22,40,0.72); backdrop-filter:blur(5px); z-index:500; display:flex; align-items:center; justify-content:center; padding:1.25rem; opacity:0; pointer-events:none; transition:opacity var(--transition); }
+      .overlay.show { opacity:1; pointer-events:all; }
+      .modal { background:var(--white); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); padding:2rem; max-width:350px; width:100%; text-align:center; transform:scale(0.9); transition:transform var(--transition); }
+      .overlay.show .modal { transform:scale(1); }
+      .modal-ico { font-size:2.5rem; margin-bottom:0.7rem; }
+      .modal h3 { font-family:"Bebas Neue",sans-serif; font-size:1.45rem; letter-spacing:1px; color:var(--blue-dark); margin-bottom:0.4rem; }
+      .modal p { font-size:0.85rem; color:var(--gray-text); margin-bottom:1.4rem; line-height:1.6; }
+      .modal-btns { display:flex; gap:0.7rem; justify-content:center; }
+      .btn-cancel { background:var(--gray-bg); color:var(--gray-text); border:1.5px solid rgba(21,101,192,0.15); }
+      .btn-cancel:hover { background:var(--blue-pale); color:var(--blue-mid); border-color:var(--blue-mid); }
+      .btn-hapus { background:linear-gradient(135deg,#c62828,var(--danger)); color:white; border:none; box-shadow:0 4px 14px rgba(239,83,80,0.3); }
+      .btn-hapus:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(239,83,80,0.45); }
+
+      /* ── TOAST ── */
+      .toast-box { position:fixed; bottom:1.5rem; right:1.5rem; z-index:999; display:flex; flex-direction:column; gap:0.5rem; }
+      .toast { display:flex; align-items:center; gap:0.55rem; padding:0.78rem 1.1rem; border-radius:var(--radius-md); background:var(--blue-dark); color:white; box-shadow:var(--shadow-lg); font-size:0.83rem; font-weight:700; min-width:220px; max-width:310px; animation:tIn 0.3s ease both; }
+      .toast.s{border-left:4px solid var(--teal);} .toast.e{border-left:4px solid var(--danger);} .toast.w{border-left:4px solid var(--warning);}
+      @keyframes tIn  { from{opacity:0;transform:translateX(18px);}to{opacity:1;transform:translateX(0);} }
+      @keyframes tOut { from{opacity:1;transform:translateX(0);}to{opacity:0;transform:translateX(18px);} }
+      .toast.out { animation:tOut 0.3s ease forwards; }
+
+      /* ── RESPONSIVE ── */
+      @media(max-width:900px){
+        .sidebar{transform:translateX(-100%);} .sidebar.open{transform:translateX(0);}
+        .main{margin-left:0;} .topbar-toggle{display:flex;} .form-card{position:static;}
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">🤿</div>
+        <div>
+          <div class="brand-name">DIVE<span>LOMBOK</span></div>
+          <div class="brand-role">Management System</div>
+        </div>
+      </div>
+
+      <div class="admin-badge">
+        <div class="badge-dot"></div>
+        <span>Admin Online</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-label">Menu Utama</div>
+        <a href="#" class="nav-item active">
+          <span class="nav-ico">📋</span> Kelola Reservasi
+          <span class="nav-cnt" id="navCount">0</span>
+        </a>
+        <a href="index.html" class="nav-item">
+          <span class="nav-ico">🌐</span> Halaman Customer
+        </a>
+
+        <div class="nav-label" style="margin-top:1.25rem">Referensi</div>
+        <div class="nav-item">
+          <span class="nav-ico">📦</span> Paket Tersedia
+          <span class="nav-cnt">4</span>
+        </div>
+        <div class="nav-item">
+          <span class="nav-ico">📍</span> Lokasi Diving
+          <span class="nav-cnt">4</span>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="index.html" class="back-link">← Kembali ke Beranda</a>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="topbar-left">
+          <button class="topbar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+            <span></span><span></span><span></span>
+          </button>
+          <div>
+            <div class="topbar-title">PANEL ADMIN</div>
+            <div class="topbar-sub">Kelola Reservasi · DiveLombok</div>
+          </div>
+        </div>
+        <div class="topbar-admin">
+          <div class="adm-avatar">AD</div>
+          <div>
+            <div class="adm-name">Administrator</div>
+            <div class="adm-role">● Admin</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Body -->
+      <div class="page-body">
+
+        <div class="breadcrumb">
+          <a href="index.html">🏠 Beranda</a>
+          <span style="color:rgba(21,101,192,0.3)">›</span>
+          <span style="color:var(--blue-mid)">Panel Admin</span>
+          <span style="color:rgba(21,101,192,0.3)">›</span>
+          <span style="color:var(--blue-mid)">Kelola Reservasi</span>
+        </div>
+
+        <!-- STATISTIK -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon si-blue">🧾</div>
+            <div><div class="stat-val" id="sTotal">0</div><div class="stat-lbl">Total Reservasi</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon si-teal">💰</div>
+            <div><div class="stat-val" id="sNilai">0</div><div class="stat-lbl">Total Nilai (Rp)</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon si-warn">⚠️</div>
+            <div><div class="stat-val" id="sLow">0</div><div class="stat-lbl">Slot Menipis</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon si-dng">🔴</div>
+            <div><div class="stat-val" id="sPenuh">0</div><div class="stat-lbl">Sesi Penuh</div></div>
+          </div>
+        </div>
+
+        <!-- CONTENT GRID -->
+        <div class="content-grid">
+
+          <!-- FORM CARD -->
+          <div class="form-card" id="formCard">
+            <div class="fcard-head" id="fcHead">
+              <div class="fch-ico" id="fchIco">➕</div>
+              <div>
+                <div class="fch-h3" id="fTitle">TAMBAH RESERVASI</div>
+                <div class="fch-p"  id="fSub">Isi semua field yang diperlukan</div>
+              </div>
+              <span class="mode-chip" id="mChip">EDIT</span>
+            </div>
+            <div class="fcard-body">
+              <input type="hidden" id="editId" />
+
+              <div class="frow2">
+                <div class="fgroup">
+                  <label>Kode <span class="req">*</span></label>
+                  <input type="text" id="fKode" placeholder="RES-001" maxlength="20" />
+                  <div class="err-msg" id="eKode">⚠ Kode wajib & unik</div>
+                </div>
+                <div class="fgroup">
+                  <label>Tanggal <span class="req">*</span></label>
+                  <input type="date" id="fTanggal" />
+                  <div class="err-msg" id="eTanggal">⚠ Wajib diisi</div>
+                </div>
+              </div>
+
+              <div class="fgroup">
+                <label>Nama Pemesan <span class="req">*</span></label>
+                <input type="text" id="fNama" placeholder="Nama lengkap..." maxlength="60" />
+                <div class="err-msg" id="eNama">⚠ Min 3 karakter</div>
+              </div>
+
+              <div class="frow2">
+                <div class="fgroup">
+                  <label>Paket <span class="req">*</span></label>
+                  <select id="fPaket">
+                    <option value="">-- Pilih --</option>
+                    <option value="Pemula">🐠 Pemula</option>
+                    <option value="Menengah">🐙 Menengah</option>
+                    <option value="Profesional">🦈 Profesional</option>
+                    <option value="Grup">🐢 Grup</option>
+                  </select>
+                  <div class="err-msg" id="ePaket">⚠ Pilih paket</div>
+                </div>
+                <div class="fgroup">
+                  <label>Lokasi <span class="req">*</span></label>
+                  <select id="fLokasi">
+                    <option value="">-- Pilih --</option>
+                    <option value="Gili Trawangan">Gili Trawangan</option>
+                    <option value="Gili Meno">Gili Meno</option>
+                    <option value="Gili Air">Gili Air</option>
+                    <option value="Senggigi">Senggigi</option>
+                  </select>
+                  <div class="err-msg" id="eLokasi">⚠ Pilih lokasi</div>
+                </div>
+              </div>
+
+              <div class="frow2">
+                <div class="fgroup">
+                  <label>Jml Peserta <span class="req">*</span></label>
+                  <input type="number" id="fPeserta" placeholder="cth: 2" min="1" max="20" />
+                  <div class="err-msg" id="ePeserta">⚠ 1–20 orang</div>
+                </div>
+                <div class="fgroup">
+                  <label>Slot Tersisa <span class="req">*</span></label>
+                  <input type="number" id="fSlot" placeholder="cth: 8" min="0" max="20" />
+                  <div class="err-msg" id="eSlot">⚠ 0–20</div>
+                </div>
+              </div>
+
+              <div class="fgroup">
+                <label>Instruktur <span class="req">*</span></label>
+                <input type="text" id="fInstruktur" placeholder="Nama instruktur..." maxlength="50" />
+                <div class="err-msg" id="eInstruktur">⚠ Wajib diisi</div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-ghost" onclick="resetForm()">↺ Reset</button>
+                <button class="btn btn-primary" id="btnSimpan" onclick="simpan()">➕ Tambah</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLE CARD -->
+          <div class="table-card">
+            <div class="tcard-head">
+              <h3>📋 DAFTAR RESERVASI</h3>
+              <div class="toolbar">
+                <div class="s-wrap">
+                  <span class="s-ico">🔍</span>
+                  <input type="text" id="searchInput" placeholder="Cari nama / kode..." oninput="render()" />
+                </div>
+                <select class="f-sel" id="fFilter" onchange="render()">
+                  <option value="">Semua Paket</option>
+                  <option value="Pemula">Pemula</option>
+                  <option value="Menengah">Menengah</option>
+                  <option value="Profesional">Profesional</option>
+                  <option value="Grup">Grup</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th><th>Kode</th><th>Nama Pemesan</th><th>Tanggal</th>
+                    <th>Paket</th><th>Lokasi</th><th>Peserta</th><th>Slot Sisa</th>
+                    <th>Instruktur</th><th>Total Harga</th><th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+              </table>
+            </div>
+
+            <div class="empty-state" id="emptyState" style="display:none">
+              <div class="ei">🌊</div>
+              <h3>Belum Ada Data</h3>
+              <p>Tambahkan reservasi melalui form di samping.</p>
+            </div>
+          </div>
+
+        </div><!-- /content-grid -->
+      </div><!-- /page-body -->
+    </div><!-- /main -->
+
+    <!-- MODAL HAPUS -->
+    <div class="overlay" id="modalOverlay">
+      <div class="modal">
+        <div class="modal-ico">🗑️</div>
+        <h3>Hapus Reservasi?</h3>
+        <p id="modalMsg">Yakin ingin menghapus data ini?</p>
+        <div class="modal-btns">
+          <button class="btn btn-cancel" onclick="tutupModal()">Batal</button>
+          <button class="btn btn-hapus" id="btnKonfirmHapus">Ya, Hapus</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast-box" id="toastBox"></div>
+
+    <script>
+      // ── Konstanta ──
+      const HARGA = { Pemula:350000, Menengah:550000, Profesional:850000, Grup:250000 };
+      const BCLS  = { Pemula:'bp', Menengah:'bm', Profesional:'bpr', Grup:'bg' };
+      const KEY   = 'divelombok_admin_v2';
+
+      // ── State ──
+      let data    = [];
+      let hapusId = null;
+
+      // ── Default data ──
+      const defaultData = () => [
+        { id:uid(), kode:'RES-001', nama:'Budi Pratama',        tanggal:'2025-04-05', paket:'Pemula',      lokasi:'Gili Trawangan', peserta:2, slot:6,  instruktur:'Budi Santoso' },
+        { id:uid(), kode:'RES-002', nama:'Sari Indah',          tanggal:'2025-04-05', paket:'Menengah',    lokasi:'Gili Meno',      peserta:1, slot:2,  instruktur:'Sari Dewi' },
+        { id:uid(), kode:'RES-003', nama:'Reza Ananda',         tanggal:'2025-04-06', paket:'Profesional', lokasi:'Gili Air',       peserta:3, slot:0,  instruktur:'Reza Pratama' },
+        { id:uid(), kode:'RES-004', nama:'Komunitas Selam NTB', tanggal:'2025-04-07', paket:'Grup',        lokasi:'Gili Trawangan', peserta:8, slot:12, instruktur:'Anisa Rahma' },
+        { id:uid(), kode:'RES-005', nama:'Dewi Lestari',        tanggal:'2025-04-08', paket:'Pemula',      lokasi:'Senggigi',       peserta:2, slot:4,  instruktur:'Budi Santoso' },
+      ];
+
+      const uid  = () => 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
+      const save = () => localStorage.setItem(KEY, JSON.stringify(data));
+      const load = () => { const raw = localStorage.getItem(KEY); data = raw ? JSON.parse(raw) : defaultData(); save(); };
+
+      // ── Validasi ──
+      const setErr = (fId, eId, show) => {
+        document.getElementById(fId).classList.toggle('err', show);
+        document.getElementById(eId).classList.toggle('show', show);
+      };
+
+      const validate = () => {
+        const editId  = document.getElementById('editId').value;
+        const kode    = document.getElementById('fKode').value.trim();
+        const nama    = document.getElementById('fNama').value.trim();
+        const tgl     = document.getElementById('fTanggal').value;
+        const paket   = document.getElementById('fPaket').value;
+        const lokasi  = document.getElementById('fLokasi').value;
+        const peserta = parseInt(document.getElementById('fPeserta').value);
+        const slot    = parseInt(document.getElementById('fSlot').value);
+        const instr   = document.getElementById('fInstruktur').value.trim();
+        let ok = true;
+
+        const dupKode = data.some(r => r.kode.toLowerCase() === kode.toLowerCase() && r.id !== editId);
+        if (!kode || dupKode)                   { setErr('fKode','eKode',true);       ok=false; } else setErr('fKode','eKode',false);
+        if (!nama || nama.length < 3)           { setErr('fNama','eNama',true);       ok=false; } else setErr('fNama','eNama',false);
+        if (!tgl)                               { setErr('fTanggal','eTanggal',true); ok=false; } else setErr('fTanggal','eTanggal',false);
+        if (!paket)                             { setErr('fPaket','ePaket',true);     ok=false; } else setErr('fPaket','ePaket',false);
+        if (!lokasi)                            { setErr('fLokasi','eLokasi',true);   ok=false; } else setErr('fLokasi','eLokasi',false);
+        if (!peserta||peserta<1||peserta>20)    { setErr('fPeserta','ePeserta',true); ok=false; } else setErr('fPeserta','ePeserta',false);
+        if (isNaN(slot)||slot<0||slot>20)       { setErr('fSlot','eSlot',true);       ok=false; } else setErr('fSlot','eSlot',false);
+        if (!instr)                             { setErr('fInstruktur','eInstruktur',true); ok=false; } else setErr('fInstruktur','eInstruktur',false);
+
+        return ok;
+      };
+
+      // ── Simpan / Update ──
+      const simpan = () => {
+        if (!validate()) { toast('⚠️ Lengkapi semua field!','w'); return; }
+        const editId = document.getElementById('editId').value;
+        const isEdit = !!editId;
+
+        const row = {
+          id:         isEdit ? editId : uid(),
+          kode:       document.getElementById('fKode').value.trim().toUpperCase(),
+          nama:       document.getElementById('fNama').value.trim(),
+          tanggal:    document.getElementById('fTanggal').value,
+          paket:      document.getElementById('fPaket').value,
+          lokasi:     document.getElementById('fLokasi').value,
+          peserta:    parseInt(document.getElementById('fPeserta').value),
+          slot:       parseInt(document.getElementById('fSlot').value),
+          instruktur: document.getElementById('fInstruktur').value.trim(),
+        };
+
+        if (isEdit) { data = data.map(r => r.id === editId ? row : r); toast('✅ Reservasi diperbarui!','s'); }
+        else        { data = [row, ...data]; toast('🎉 Reservasi ditambahkan!','s'); }
+
+        save(); resetForm(); render(); updateStats();
+        setTimeout(() => { const tr = document.querySelector(`tr[data-id="${row.id}"]`); if(tr) tr.classList.add('new-row'); }, 80);
+      };
+
+      // ── Edit ──
+      const edit = (id) => {
+        const r = data.find(x => x.id === id);
+        if (!r) return;
+        document.getElementById('editId').value      = r.id;
+        document.getElementById('fKode').value       = r.kode;
+        document.getElementById('fNama').value       = r.nama;
+        document.getElementById('fTanggal').value    = r.tanggal;
+        document.getElementById('fPaket').value      = r.paket;
+        document.getElementById('fLokasi').value     = r.lokasi;
+        document.getElementById('fPeserta').value    = r.peserta;
+        document.getElementById('fSlot').value       = r.slot;
+        document.getElementById('fInstruktur').value = r.instruktur;
+
+        document.getElementById('fcHead').classList.add('edit');
+        document.getElementById('fchIco').textContent   = '✏️';
+        document.getElementById('fTitle').textContent   = 'EDIT RESERVASI';
+        document.getElementById('fSub').textContent     = 'Ubah data lalu klik Simpan';
+        document.getElementById('btnSimpan').textContent= '💾 Simpan';
+        document.getElementById('mChip').style.display  = 'inline-block';
+        document.getElementById('formCard').scrollIntoView({ behavior:'smooth', block:'start' });
+      };
+
+      // ── Hapus ──
+      const hapus = (id) => {
+        const r = data.find(x => x.id === id);
+        if (!r) return;
+        hapusId = id;
+        document.getElementById('modalMsg').textContent = `Hapus reservasi "${r.kode} — ${r.nama}"? Aksi tidak dapat dibatalkan.`;
+        document.getElementById('modalOverlay').classList.add('show');
+      };
+
+      document.getElementById('btnKonfirmHapus').onclick = () => {
+        data = data.filter(r => r.id !== hapusId);
+        save(); render(); updateStats(); tutupModal();
+        toast('🗑️ Reservasi dihapus.','e');
+        hapusId = null;
+      };
+
+      const tutupModal = () => document.getElementById('modalOverlay').classList.remove('show');
+      document.getElementById('modalOverlay').addEventListener('click', e => { if(e.target === document.getElementById('modalOverlay')) tutupModal(); });
+
+      // ── Reset Form ──
+      const resetForm = () => {
+        ['fKode','fNama','fTanggal','fPaket','fLokasi','fPeserta','fSlot','fInstruktur','editId'].forEach(id => {
+          const el = document.getElementById(id); if(el){ el.value=''; el.classList.remove('err','ok'); }
+        });
+        ['eKode','eNama','eTanggal','ePaket','eLokasi','ePeserta','eSlot','eInstruktur'].forEach(id => document.getElementById(id).classList.remove('show'));
+        document.getElementById('fcHead').classList.remove('edit');
+        document.getElementById('fchIco').textContent    = '➕';
+        document.getElementById('fTitle').textContent    = 'TAMBAH RESERVASI';
+        document.getElementById('fSub').textContent      = 'Isi semua field yang diperlukan';
+        document.getElementById('btnSimpan').textContent = '➕ Tambah';
+        document.getElementById('mChip').style.display   = 'none';
+      };
+
+      // ── Render Tabel ──
+      const render = () => {
+        const q  = document.getElementById('searchInput').value.toLowerCase();
+        const pf = document.getElementById('fFilter').value;
+
+        const filtered = data.filter(r =>
+          (r.nama.toLowerCase().includes(q) || r.kode.toLowerCase().includes(q)) &&
+          (!pf || r.paket === pf)
+        );
+
+        const tbody = document.getElementById('tbody');
+        const empty = document.getElementById('emptyState');
+
+        if (filtered.length === 0) { tbody.innerHTML=''; empty.style.display='block'; return; }
+        empty.style.display = 'none';
+
+        tbody.innerHTML = filtered.map((r, i) => {
+          const total   = (HARGA[r.paket]||0) * r.peserta;
+          const slotTxt = r.slot === 0
+            ? `<span class="slot-full">Penuh</span>`
+            : r.slot <= 4
+              ? `<span class="slot-low">${r.slot} ⚠</span>`
+              : r.slot;
+
+          return `<tr data-id="${r.id}">
+            <td style="color:var(--gray-text);font-size:0.72rem">${String(i+1).padStart(2,'0')}</td>
+            <td><strong style="color:var(--blue-mid);font-size:0.77rem">${r.kode}</strong></td>
+            <td>${r.nama}</td>
+            <td style="white-space:nowrap;font-size:0.79rem">${fmtTgl(r.tanggal)}</td>
+            <td><span class="badge ${BCLS[r.paket]||''}">${r.paket}</span></td>
+            <td style="font-size:0.79rem">${r.lokasi}</td>
+            <td style="text-align:center">${r.peserta}</td>
+            <td style="text-align:center">${slotTxt}</td>
+            <td style="font-size:0.79rem">${r.instruktur}</td>
+            <td style="white-space:nowrap;font-weight:800;color:var(--blue-mid)">Rp ${total.toLocaleString('id-ID')}</td>
+            <td><div class="td-act">
+              <button class="btn btn-erow" onclick="edit('${r.id}')">✏️ Edit</button>
+              <button class="btn btn-drow" onclick="hapus('${r.id}')">🗑️ Hapus</button>
+            </div></td>
+          </tr>`;
+        }).join('');
+      };
+
+      // ── Update Statistik ──
+      const updateStats = () => {
+        const total = data.length;
+        const nilai = data.reduce((a,r) => a+(HARGA[r.paket]||0)*r.peserta, 0);
+        const low   = data.filter(r => r.slot>0 && r.slot<=4).length;
+        const penuh = data.filter(r => r.slot===0).length;
+
+        document.getElementById('sTotal').textContent  = total;
+        document.getElementById('sNilai').textContent  = fmtRp(nilai);
+        document.getElementById('sLow').textContent    = low;
+        document.getElementById('sPenuh').textContent  = penuh;
+        document.getElementById('navCount').textContent= total;
+      };
+
+      // ── Helpers ──
+      const fmtTgl = iso => iso ? new Date(iso).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}) : '-';
+      const fmtRp  = v => v>=1000000 ? (v/1000000).toFixed(1).replace('.0','')+'Jt' : v>=1000 ? (v/1000).toFixed(0)+'K' : v.toLocaleString('id-ID');
+
+      // ── Toast ──
+      const toast = (msg, type='s') => {
+        const box = document.getElementById('toastBox');
+        const el  = document.createElement('div');
+        el.className = `toast ${type}`; el.textContent = msg;
+        box.appendChild(el);
+        setTimeout(() => { el.classList.add('out'); setTimeout(()=>el.remove(),320); }, 3000);
+      };
+
+      // ── Sidebar Mobile ──
+      const toggleSidebar = () => {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('sidebarOverlay').classList.toggle('show');
+        document.getElementById('sidebarToggle').classList.toggle('open');
+      };
+      const closeSidebar = () => {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('show');
+        document.getElementById('sidebarToggle').classList.remove('open');
+      };
+
+      // ── Live Validasi ──
+      const lv = (fId, eId, fn) => document.getElementById(fId).addEventListener('input', e => {
+        const ok = fn(e.target.value);
+        setErr(fId,eId,!ok);
+        e.target.classList.toggle('ok',ok);
+      });
+      lv('fNama','eNama', v => v.trim().length >= 3);
+      lv('fInstruktur','eInstruktur', v => v.trim().length > 0);
+      lv('fKode','eKode', v => {
+        const eid = document.getElementById('editId').value;
+        return v.trim().length>0 && !data.some(r => r.kode.toLowerCase()===v.trim().toLowerCase() && r.id!==eid);
+      });
+      document.getElementById('fPeserta').addEventListener('input', e => { const v=parseInt(e.target.value); setErr('fPeserta','ePeserta',isNaN(v)||v<1||v>20); });
+      document.getElementById('fSlot').addEventListener('input',   e => { const v=parseInt(e.target.value); setErr('fSlot','eSlot',isNaN(v)||v<0||v>20); });
+
+      // ── INIT ──
+      load(); render(); updateStats();
+    </script>
+  </body>
+</html>
