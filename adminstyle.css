@@ -1,183 +1,571 @@
-/* ══════════════════════════════════════════
-   SEARCH SECTION — FIX BACKGROUND & KONTRAS
-══════════════════════════════════════════ */
-.search-section {
-  background: linear-gradient(
-    135deg,
-    #0a1628 0%,
-    #0d2b55 40%,
-    #1565c0 70%,
-    #1e88e5 100%
-  );
-  padding: 4rem 1.25rem;
-  position: relative;
-  overflow: hidden;
+/* ================================================================
+   styleadmin.css — CSS untuk Halaman Admin (admin.html)
+   Project  : DeepBlue Diving
+   Role     : Administrator
+   Tema     : Terang, bersih, fokus fungsionalitas data
+================================================================ */
+
+/* ---------------------------------------------------------------
+   CSS VARIABLES & RESET
+--------------------------------------------------------------- */
+:root {
+  --primary:       #0a7abf;
+  --primary-dark:  #04375c;
+  --accent:        #00bfa5;
+  --danger:        #e53935;
+  --danger-light:  rgba(229, 57, 53, 0.12);
+  --warning:       #f59e0b;
+  --warning-light: rgba(245, 158, 11, 0.12);
+  --success:       #10b981;
+  --success-light: rgba(16, 185, 129, 0.12);
+
+  --bg-page:       #f0f4f8;
+  --bg-card:       #ffffff;
+  --bg-sidebar:    #04375c;
+  --bg-navbar:     #020e1a;
+
+  --text-dark:     #1a2b3c;
+  --text-mid:      #4a6070;
+  --text-light:    #8fa5b5;
+  --border:        #d1dde8;
+
+  --radius:        10px;
+  --shadow-sm:     0 1px 4px rgba(0,0,0,0.08);
+  --shadow-md:     0 4px 16px rgba(0,0,0,0.1);
+  --transition:    0.25s ease;
+
+  --navbar-h:      60px;
+  --sidebar-w:     220px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-page);
+  color: var(--text-dark);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+a { text-decoration: none; color: inherit; }
+
+
+/* ---------------------------------------------------------------
+   NAVBAR ADMIN — Flexbox
+--------------------------------------------------------------- */
+.admin-navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: var(--navbar-h);
+  background: var(--bg-navbar);
+  padding: 0 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
   color: #ffffff;
 }
 
-/* Glow kanan atas */
-.search-section::before {
-  content: "";
-  position: absolute;
-  top: -80px;
-  right: -80px;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: rgba(0, 180, 216, 0.15);
-  filter: blur(60px);
-}
+.admin-logo span { color: #00d4ff; }
 
-/* Glow kiri bawah */
-.search-section::after {
-  content: "";
-  position: absolute;
-  bottom: -100px;
-  left: -100px;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: rgba(66, 165, 245, 0.2);
-  filter: blur(70px);
-}
-
-/* Container */
-.search-box {
-  max-width: 850px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 2;
-}
-
-/* Header */
-.search-box .section-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.search-box .section-header h2 {
-  color: #ffffff;
-  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-}
-
-.search-box .section-header p {
-  color: rgba(255, 255, 255, 0.75);
-}
-
-/* Form grid */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+.admin-nav-right {
+  display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
-/* Tablet */
-@media (min-width: 600px) {
-  .form-grid {
-    grid-template-columns: 1fr 1fr;
-  }
+.admin-user-badge {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.65);
 }
 
-/* Form group */
+.btn-back {
+  font-size: 0.85rem;
+  color: #00d4ff;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid rgba(0,212,255,0.35);
+  border-radius: 6px;
+  transition: background var(--transition), color var(--transition);
+}
+
+.btn-back:hover {
+  background: rgba(0,212,255,0.15);
+  color: #ffffff;
+}
+
+
+/* ---------------------------------------------------------------
+   LAYOUT ADMIN — Sidebar + Main (Flexbox)
+--------------------------------------------------------------- */
+.admin-wrapper {
+  display: flex;
+  margin-top: var(--navbar-h);
+  min-height: calc(100vh - var(--navbar-h));
+}
+
+
+/* ---------------------------------------------------------------
+   SIDEBAR ADMIN
+--------------------------------------------------------------- */
+.admin-sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-sidebar);
+  flex-shrink: 0;
+  padding: 1.5rem 0;
+  position: sticky;
+  top: var(--navbar-h);
+  height: calc(100vh - var(--navbar-h));
+  overflow-y: auto;
+}
+
+.admin-sidebar-menu {
+  list-style: none;
+}
+
+.admin-sidebar-menu li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  border-left: 3px solid transparent;
+}
+
+.admin-sidebar-menu li:hover {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.9);
+}
+
+.admin-sidebar-menu li.active {
+  background: rgba(0,212,255,0.1);
+  color: #00d4ff;
+  border-left-color: #00d4ff;
+}
+
+.admin-sidebar-menu li span { font-size: 1.1rem; }
+
+
+/* ---------------------------------------------------------------
+   MAIN CONTENT AREA
+--------------------------------------------------------------- */
+.admin-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1100px;
+  overflow-x: hidden;
+}
+
+.page-header {
+  margin-bottom: 1.75rem;
+}
+
+.page-header h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 1.5px;
+  color: var(--primary-dark);
+  margin-bottom: 0.25rem;
+}
+
+.page-header p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+
+/* ---------------------------------------------------------------
+   ADMIN CARD — Wrapper tiap section
+--------------------------------------------------------------- */
+.admin-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-card-header h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  color: var(--primary-dark);
+}
+
+.total-label {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  background: var(--bg-page);
+  padding: 0.3rem 0.8rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+}
+
+
+/* ---------------------------------------------------------------
+   (7) STATISTIK CARDS — Grid 4 kolom
+--------------------------------------------------------------- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);  /* Mobile: 2 kolom */
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 700px) {
+  /* Desktop: 4 kolom */
+  .stats-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-card .stat-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card .stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  color: var(--primary-dark);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.stat-card .stat-label {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-card.danger  { border-top: 3px solid var(--danger);  }
+.stat-card.success { border-top: 3px solid var(--success); }
+.stat-card.warning { border-top: 3px solid var(--warning); }
+.stat-card.primary { border-top: 3px solid var(--primary); }
+
+
+/* ---------------------------------------------------------------
+   (1) FORM TAMBAH/EDIT — 2 kolom grid
+--------------------------------------------------------------- */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;        /* Mobile: 1 kolom */
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  /* Desktop: 2 kolom */
+  .form-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
 
-.form-group.full {
-  grid-column: 1 / -1;
-}
-
-/* Label */
 .form-group label {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  letter-spacing: 0.5px;
-  color: rgba(255, 255, 255, 0.85);
-  text-transform: uppercase;
+  color: var(--text-mid);
 }
 
-/* Input */
+.required { color: var(--danger); }
+
 .form-group input,
-.form-group select,
-.form-group textarea {
+.form-group select {
   width: 100%;
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  background: #f8fafc;
+  border: 1.5px solid var(--border);
   border-radius: 8px;
-  color: #ffffff;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
+  padding: 0.65rem 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-dark);
   outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
 }
 
-/* Placeholder */
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-/* Select option */
-.form-group select option {
-  background: #0d2b55;
-  color: white;
-}
-
-/* Hover */
-.form-group input:hover,
-.form-group select:hover,
-.form-group textarea:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-/* Focus effect (WAJIB ADA) */
+/* Focus effect */
 .form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: #00b4d8;
-  background: rgba(0, 180, 216, 0.15);
-  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.25);
+.form-group select:focus {
+  border-color: var(--primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(10, 122, 191, 0.12);
 }
 
-/* Submit button area */
-.form-submit {
+/* Input error state */
+.form-group input.input-error,
+.form-group select.input-error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px var(--danger-light);
+}
+
+.error-msg {
+  font-size: 0.78rem;
+  color: var(--danger);
+  min-height: 16px;
+  display: block;
+}
+
+.form-actions {
   display: flex;
   gap: 0.75rem;
-  justify-content: flex-end;
-  margin-top: 1rem;
-  grid-column: 1 / -1;
   flex-wrap: wrap;
 }
 
-/* Button search */
-.form-submit .btn-primary {
-  background: linear-gradient(135deg, #1565c0, #00b4d8);
-  color: white;
+/* Tombol Simpan */
+.btn-save {
+  background: linear-gradient(135deg, var(--primary), #0d95e8);
+  color: #ffffff;
   border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 50px;
+  padding: 0.7rem 1.75rem;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform var(--transition), box-shadow var(--transition);
 }
 
-.form-submit .btn-primary:hover {
+.btn-save:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.5);
+  box-shadow: 0 6px 16px rgba(10, 122, 191, 0.3);
 }
 
-/* Button reset */
-.form-submit .btn-secondary {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  border: none;
-  padding: 0.7rem 1.3rem;
-  border-radius: 50px;
+/* Tombol Batal */
+.btn-cancel {
+  background: transparent;
+  color: var(--danger);
+  border: 1.5px solid var(--danger);
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: background var(--transition), color var(--transition);
 }
 
-.form-submit .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.25);
+.btn-cancel:hover {
+  background: var(--danger-light);
+}
+
+
+/* ---------------------------------------------------------------
+   (5) SEARCH + (6) FILTER BAR
+--------------------------------------------------------------- */
+.search-filter-bar {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.search-filter-bar input[type="text"] {
+  flex: 1;
+  min-width: 220px;
+  background: #f8fafc;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.search-filter-bar input[type="text"]:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(10,122,191,0.12);
+}
+
+.search-filter-bar input[type="text"]::placeholder {
+  color: var(--text-light);
+}
+
+.search-filter-bar select {
+  background: #f8fafc;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--transition);
+}
+
+.search-filter-bar select:focus { border-color: var(--primary); }
+
+
+/* ---------------------------------------------------------------
+   (2) TABEL DAFTAR PAKET — Zebra striping, border, padding
+--------------------------------------------------------------- */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+thead {
+  background: var(--primary-dark);
+}
+
+thead th {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+}
+
+tbody tr { transition: background var(--transition); }
+
+/* Zebra striping */
+tbody tr:nth-child(odd)  { background: #ffffff; }
+tbody tr:nth-child(even) { background: #f5f9fc; }
+
+tbody tr:hover { background: #e8f4fb; }
+
+tbody td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dark);
+  vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+
+/* Kode badge */
+.kode-badge {
+  display: inline-block;
+  background: rgba(10,122,191,0.1);
+  color: var(--primary);
+  padding: 0.2rem 0.6rem;
+  border-radius: 5px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: monospace;
+  letter-spacing: 0.5px;
+}
+
+/* Kategori badge */
+.kat-badge {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.kat-Pemula   { background: rgba( 16,185,129,0.12); color: #059669; }
+.kat-Menengah { background: rgba( 59,130,246,0.12); color: #2563eb; }
+.kat-Expert   { background: rgba(245,158, 11,0.15); color: #d97706; }
+.kat-Spesial  { background: rgba(139, 92,246,0.12); color: #7c3aed; }
+
+/* Stok rendah */
+.stok-rendah  { color: var(--danger); font-weight: 700; }
+.stok-normal  { color: var(--success); font-weight: 600; }
+
+/* Tombol aksi tabel */
+.btn-edit {
+  background: rgba(10,122,191,0.1);
+  color: var(--primary);
+  border: 1px solid rgba(10,122,191,0.25);
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  margin-right: 0.4rem;
+}
+
+.btn-edit:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.btn-hapus {
+  background: var(--danger-light);
+  color: var(--danger);
+  border: 1px solid rgba(229,57,53,0.25);
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.btn-hapus:hover {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+
+/* ---------------------------------------------------------------
+   EMPTY STATE
+--------------------------------------------------------------- */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-light);
+  font-size: 0.95rem;
 }
