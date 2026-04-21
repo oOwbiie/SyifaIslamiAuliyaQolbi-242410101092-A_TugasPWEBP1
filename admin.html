@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeepBlue Diving — Admin Panel</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- CSS khusus Admin (file terpisah dari customer) -->
+  <link rel="stylesheet" href="style-admin.css" />
+</head>
+
+<body>
+
+  <!-- =====================================================
+       NAVBAR ADMIN
+  ===================================================== -->
+  <nav class="admin-navbar">
+    <div class="admin-logo">&#9881; DeepBlue <span>Admin</span></div>
+    <div class="admin-nav-right">
+      <span class="admin-user-badge">&#128100; Administrator</span>
+      <a href="index.html" class="btn-back">&#8592; Ke Halaman Customer</a>
+    </div>
+  </nav>
+
+
+  <div class="admin-wrapper">
+
+    <!-- ===================================================
+         SIDEBAR ADMIN
+    =================================================== -->
+    <aside class="admin-sidebar">
+      <ul class="admin-sidebar-menu">
+        <li class="active"><span>&#128230;</span> Kelola Paket</li>
+        <li><span>&#128197;</span> Jadwal</li>
+        <li><span>&#128101;</span> Pengguna</li>
+        <li><span>&#128202;</span> Laporan</li>
+        <li><span>&#9881;</span> Pengaturan</li>
+      </ul>
+    </aside>
+
+
+    <!-- ===================================================
+         KONTEN UTAMA ADMIN
+    =================================================== -->
+    <main class="admin-main">
+
+      <div class="page-header">
+        <h1>&#128230; Manajemen Paket Diving</h1>
+        <p>Kelola data paket, jadwal, stok slot, dan harga layanan diving</p>
+      </div>
+
+
+      <!-- -------------------------------------------------
+           (7) STATISTIK — Total item, nilai, stok menipis
+      ------------------------------------------------- -->
+      <div class="stats-grid" id="statsGrid">
+        <!-- Di-render oleh JavaScript -->
+      </div>
+
+
+      <!-- -------------------------------------------------
+           (1) FORM TAMBAH / EDIT PAKET — Validasi JS
+      ------------------------------------------------- -->
+      <section class="admin-card" id="formSection">
+        <div class="admin-card-header">
+          <h2 id="formTitle">&#43; Tambah Paket Baru</h2>
+        </div>
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="kodePaket">Kode Paket <span class="required">*</span></label>
+            <input type="text" id="kodePaket" placeholder="Contoh: PKT-001" maxlength="10">
+            <span class="error-msg" id="errKode"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="namaPaket">Nama Paket <span class="required">*</span></label>
+            <input type="text" id="namaPaket" placeholder="Contoh: Paket Pemula">
+            <span class="error-msg" id="errNama"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="kategori">Kategori <span class="required">*</span></label>
+            <select id="kategori">
+              <option value="">-- Pilih Kategori --</option>
+              <option value="Pemula">Pemula</option>
+              <option value="Menengah">Menengah</option>
+              <option value="Expert">Expert</option>
+              <option value="Spesial">Spesial</option>
+            </select>
+            <span class="error-msg" id="errKategori"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="stok">Stok Slot <span class="required">*</span></label>
+            <input type="number" id="stok" placeholder="Jumlah slot tersedia" min="0">
+            <span class="error-msg" id="errStok"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="harga">Harga (Rp) <span class="required">*</span></label>
+            <input type="number" id="harga" placeholder="Contoh: 150000" min="0">
+            <span class="error-msg" id="errHarga"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="tanggalMasuk">Tanggal Masuk <span class="required">*</span></label>
+            <input type="date" id="tanggalMasuk">
+            <span class="error-msg" id="errTanggal"></span>
+          </div>
+
+        </div><!-- /form-grid -->
+
+        <div class="form-actions">
+          <button class="btn-save" id="btnSimpan" onclick="simpanPaket()">
+            &#128190; Simpan Paket
+          </button>
+          <button class="btn-cancel" id="btnBatal" onclick="batalEdit()" style="display:none;">
+            &#10006; Batal Edit
+          </button>
+        </div>
+
+      </section>
+
+
+      <!-- -------------------------------------------------
+           (5) PENCARIAN REAL-TIME + (6) FILTER KATEGORI
+      ------------------------------------------------- -->
+      <section class="admin-card">
+        <div class="search-filter-bar">
+          <input
+            type="text"
+            id="inputCari"
+            placeholder="&#128269;  Cari nama atau kode paket..."
+            oninput="filterData()"
+          >
+          <select id="filterKategori" onchange="filterData()">
+            <option value="">Semua Kategori</option>
+            <option value="Pemula">Pemula</option>
+            <option value="Menengah">Menengah</option>
+            <option value="Expert">Expert</option>
+            <option value="Spesial">Spesial</option>
+          </select>
+        </div>
+      </section>
+
+
+      <!-- -------------------------------------------------
+           (2) TABEL DAFTAR PAKET — Render dari array JS
+           (3) Tombol Edit  (4) Tombol Hapus + konfirmasi
+      ------------------------------------------------- -->
+      <section class="admin-card">
+        <div class="admin-card-header">
+          <h2>&#128203; Daftar Paket Diving</h2>
+          <span class="total-label" id="totalLabel"></span>
+        </div>
+
+        <div class="table-wrapper">
+          <table id="tabelPaket">
+            <thead>
+              <tr>
+                <th>Kode</th>
+                <th>Nama Paket</th>
+                <th>Kategori</th>
+                <th>Stok Slot</th>
+                <th>Harga</th>
+                <th>Tgl Masuk</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tabelBody">
+              <!-- Di-render oleh JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pesan kosong -->
+        <div id="emptyMsg" class="empty-state" style="display:none;">
+          <p>&#128270; Tidak ada data yang sesuai pencarian.</p>
+        </div>
+
+      </section>
+
+    </main><!-- /admin-main -->
+  </div><!-- /admin-wrapper -->
+
+
+  <!-- =====================================================
+       JAVASCRIPT — Semua fitur admin
+       Menggunakan: const/let, arrow function, array methods,
+       DOM manipulation, event delegation, localStorage
+  ===================================================== -->
+  <script src="script-admin.js"></script>
+
+</body>
+</html>
